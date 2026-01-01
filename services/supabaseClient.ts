@@ -8,11 +8,15 @@ import { createClient } from '@supabase/supabase-js';
  * credentials as defaults to ensure the app works out-of-the-box in the 
  * preview environment.
  */
-const supabaseUrl = (process.env as any).NEXT_PUBLIC_SUPABASE_URL;
+const env = import.meta.env as Record<string, string | undefined>;
+const supabaseUrl = env.VITE_SUPABASE_URL;
+const supabaseKey = env.VITE_SUPABASE_ANON_KEY;
 
-// The key can be provided under different environment variable names depending on the platform.
-const supabaseAnonKey = 
-  (process.env as any).NEXT_PUBLIC_SUPABASE_ANON_KEY
-  (process.env as any).NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error(
+    'Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables. ' +
+      'Set them in Netlify (Site settings → Build & deploy → Environment → Environment variables).'
+  );
+}
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseKey);
