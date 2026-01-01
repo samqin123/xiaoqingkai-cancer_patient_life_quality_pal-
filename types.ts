@@ -61,4 +61,6 @@ export interface SocialPost {
   isFavorited?: boolean;
   fullBody?: string; // 详情页的长文本内容
   coverEmoji?: string;
+  // Fix: Add image_url to match Supabase data structure and resolve TS errors
+  image_url?: string;
 }
